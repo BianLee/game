@@ -1,0 +1,25 @@
+
+
+/* 
+path {
+    pointer-events: all;
+}
+path:hover {
+    fill: #e3e1e1; 
+    cursor: pointer;
+}
+*/ 
+
+html, body {
+    zoom: 1.12; 
+    max-width: 100%;
+    overflow-x: hidden;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
