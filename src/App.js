@@ -3,6 +3,11 @@ import './App.css';
 import USAMap from "react-usa-map";
 
 var globalStateID = -1; 
+const stateArray = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", 
+"Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland",
+ "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", 
+"New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", 
+"South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
 class App extends React.Component {
 
   constructor(props) {
@@ -184,7 +189,7 @@ class App extends React.Component {
 
   hoverHandler = (e) => {
     console.log(e.target.dataset.name);
-    this.setState({hoverState: e.target.dataset.name})
+    console.log(stateArray[globalStateID])
     let newArray = Array.from(this.state.stateColors);
     if (newArray[globalStateID] == "#e3e1e1") {
       newArray[globalStateID] = ""
@@ -203,11 +208,7 @@ class App extends React.Component {
   
   mapHandler = (e) => {
 
-    const stateArray = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", 
-  "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland",
-   "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", 
-"New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", 
-"South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
+  
 
     this.findStateId(e)
  
@@ -223,7 +224,7 @@ class App extends React.Component {
 
    console.log(newArray[globalStateID]) 
 
-    if (newArray[globalStateID] == "#e3e1e1") {
+    if (newArray[globalStateID] == "#e3e1e1" || newArray[globalStateID] == "") {
       newArray[globalStateID] = this.state.lastElectionColors[globalStateID]; 
     }
     else if (newArray[globalStateID] == "#CC0000") {
@@ -442,7 +443,7 @@ class App extends React.Component {
     </div>
       <br/>
       <h1>{this.state.selectedState}</h1>
-      <p>Hover: {this.state.hoverState}</p>
+      <h1>{this.state.hoverState}</h1>
       </center>
    
     
