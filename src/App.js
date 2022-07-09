@@ -2,6 +2,8 @@ import React from "react";
 import "./App.css";
 import USAMap from "react-usa-map";
 import Colorado from "./data/Colorado";
+import Gop from "./data/Gop";
+import Democratic from "./data/Democratic";
 
 var globalStateID = -1;
 const stateArray = [
@@ -63,6 +65,7 @@ class App extends React.Component {
       stateID: -1,
       selectedStates: [],
       hoverState: "",
+      gameStage: 1,
       stateColors: [
         "",
         "",
@@ -274,6 +277,13 @@ class App extends React.Component {
       i = 49;
     }
     globalStateID = i;
+  }
+
+  handleNext(e) {
+    console.log("Clicked Next");
+    this.setState({
+      gameStage: this.state.gameStage + 1,
+    });
   }
 
   hoverHandler = (e) => {
@@ -522,23 +532,64 @@ class App extends React.Component {
       <>
         <br />
         <center>
-          <div onMouseOver={this.hoverHandler}>
-            <USAMap
-              customize={this.statesCustomConfig()}
-              onClick={this.mapHandler}
-            />
-          </div>
-          <br />
-          <p>
-            {this.state.selectedStates.map((item, index) => {
-              return (
-                <span>
-                  {index ? ", " : ""}
-                  {item}
+          {this.state.gameStage == 0 ? (
+            <>
+              <div style={{ height: "100%" }}>
+                <span style={{ fontSize: "50px", height: "100px" }}>
+                  Which political party do you represent?
                 </span>
-              );
-            })}
-          </p>
+                <Gop />
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+
+          {this.state.gameStage == 1 ? (
+            <>
+              <div onMouseOver={this.hoverHandler}>
+                <USAMap
+                  customize={this.statesCustomConfig()}
+                  onClick={this.mapHandler}
+                />
+              </div>
+              <br />
+              <p>
+                {this.state.selectedStates.map((item, index) => {
+                  return (
+                    <span>
+                      {index ? ", " : ""}
+                      {item}
+                    </span>
+                  );
+                })}
+              </p>
+              {this.state.selectedStates.length > 2 ? (
+                <span
+                  style={{
+                    position: "fixed",
+                    bottom: 30,
+                    right: 40,
+                    fontSize: "25px",
+                    backgroundColor: "black",
+                    padding: "10px",
+                    paddingLeft: "20px",
+                    paddingRight: "20px",
+                    color: "white",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                  onClick={(e) => this.handleNext(e)}
+                >
+                  →
+                </span>
+              ) : (
+                <></>
+              )}
+            </>
+          ) : (
+            <></>
+          )}
         </center>
       </>
     );
