@@ -48,3 +48,11 @@ p {
 svg {
   width: 100%;
 }
+
+@media only screen and (min-width: 1800px) {
+
+  html,
+  body {
+    zoom: 1.1
+  }
+}
