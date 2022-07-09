@@ -52,3 +52,9 @@ p {
     width: 100%;
   }
 
+  @media only screen and (max-width: 1200px) {
+    svg {
+      width: 90%;
+    }
+  }
+
