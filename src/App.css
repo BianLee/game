@@ -48,3 +48,7 @@ p {
     clear: both;
   }
 
+  svg {
+    width: 100%;
+  }
+
