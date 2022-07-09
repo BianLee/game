@@ -1,8 +1,11 @@
 import React from "react";
 import './App.css'; 
 import USAMap from "react-usa-map";
+import Colorado from "./data/Colorado"
 
-var globalStateID = -1; 
+
+
+var globalStateID = -1;
 const stateArray = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", 
 "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland",
  "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", 
@@ -14,8 +17,7 @@ class App extends React.Component {
     super(props); 
     this.state = {
       stateID: -1, 
-      selectedState: "",
-      selectedStateNumber: -1, 
+      selectedStates: [], 
       hoverState: "", 
       stateColors: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
       "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
@@ -30,7 +32,7 @@ class App extends React.Component {
 
 
 
-  findStateId = (e) => {
+  findStateId(e) {
     let i = -1; 
     if (e.target.dataset.name == "AL") {
       i = 0;
@@ -185,16 +187,17 @@ class App extends React.Component {
     globalStateID = i; 
   }
 
-
+ 
 
   hoverHandler = (e) => {
-    console.log(e.target.dataset.name);
-    console.log(stateArray[globalStateID])
     let newArray = Array.from(this.state.stateColors);
     if (newArray[globalStateID] == "#e3e1e1") {
       newArray[globalStateID] = ""
     }
     this.findStateId(e)
+    this.setState({
+      hoverState: stateArray[globalStateID]
+    })
     if (e.target.dataset.name != undefined && newArray[globalStateID] == "") {
       newArray[globalStateID] = "#e3e1e1"
     }
@@ -208,36 +211,35 @@ class App extends React.Component {
   
   mapHandler = (e) => {
 
-  
-
+    
     this.findStateId(e)
- 
-
-    this.setState({
-      selectedState: stateArray[globalStateID] 
-    })
-
+    
+    if (this.state.selectedStates.length < 3) {
+      this.setState({
+        selectedStates:[...this.state.selectedStates, stateArray[globalStateID]]
+      })
+    }
 
     // console.log(globalStateID); 
   
     let newArray = Array.from(this.state.stateColors);
 
-   console.log(newArray[globalStateID]) 
+  
 
-    if (newArray[globalStateID] == "#e3e1e1" || newArray[globalStateID] == "") {
+    if ((newArray[globalStateID] == "#e3e1e1" || newArray[globalStateID] == "") && this.state.selectedStates.length < 3) {
       newArray[globalStateID] = this.state.lastElectionColors[globalStateID]; 
     }
     else if (newArray[globalStateID] == "#CC0000") {
         newArray[globalStateID] = ''; 
         this.setState({
-          selectedState: ""
+          selectedStates: this.state.selectedStates.filter(item => item != stateArray[globalStateID])
         })
       
     }
     else if (newArray[globalStateID] == "navy") {
       newArray[globalStateID] = ''; 
       this.setState({
-        selectedState: ""
+        selectedStates: this.state.selectedStates.filter(item => item != stateArray[globalStateID])
       })
     }
       
@@ -272,7 +274,7 @@ class App extends React.Component {
       stateColors: newArray
     })
     */ 
-    
+   
   }
 
   statesCustomConfig = () => {
@@ -435,18 +437,66 @@ class App extends React.Component {
 
  render() {
   return (
-   <>
-      <center>
-      <br/>
-      <div onMouseOver={this.hoverHandler}>
-      <USAMap customize={this.statesCustomConfig()} onClick={this.mapHandler}  />
-    </div>
-      <br/>
-      <h1>{this.state.selectedState}</h1>
-      <h1>{this.state.hoverState}</h1>
-      </center>
-   
     
+   <>
+
+      <div className="row">
+        <div className="column" style={{float: "left", width: "62%", maxWidth: "1000px"}}>
+            <br/>
+            <div onMouseOver={this.hoverHandler}>
+          <USAMap customize={this.statesCustomConfig()} onClick={this.mapHandler} /> 
+          </div>
+        
+
+     {/* 
+      <svg style={{width: "250px", height: "250px"}} >
+            <path
+                fill="rgb(211, 211, 211)"
+                d="M129.6 240.1 133.6 239.7 135.1 237.6 135.6 234.7 132.1 234.1 131.5 233.4 132 231.4 131.9 230.8 133.8 230.2 136.8 227.4 137.4 222.4 138.8 219 140.7 216.8 144.3 215.2 145.9 213.6 146 211.5 145 210.9 144 209.9 142.8 204 140.1 199.2 140.7 195.7 138.3 194.6 69.2 90.5 88.1 22.9 21 7.2 19.5 11.9 19.4 19.3 14.2 31.1 11.1 33.7 10.8 34.9 9 35.7 7.6 39.9 6.8 43.1 9.5 47.3 11.1 51.5 12.2 55.1 11.9 61.5 10.1 64.6 9.5 70.4 8.5 74.1 10.3 78 13.1 82.5 15.3 87.4 16.6 91.4 16.3 94.7 16 95.2 16 97.3 21.6 103.6 21.1 106 20.5 108.2 19.8 110.2 20 118.4 22.1 122.1 24 124.7 26.8 125.2 27.8 128 26.6 131.5 24.5 133.1 23.4 133.1 22.6 137 23.1 139.9 26.3 144.3 27.9 149.6 29.4 154.3 30.7 157.4 34.1 163.2 35.5 165.8 36 168.7 37.6 169.7 37.6 172.1 36.8 174 35 181.2 34.6 183.1 37 185.8 41.2 186.3 45.7 188.1 49.6 190.2 52.5 190.2 55.4 193.3 58 198.1 59.1 200.4 63 202.5 67.9 203.3 69.3 205.4 70 208.6 68.5 209.3 68.8 210.3 72.1 211.1 74.8 211.2 78 209.5 81.9 213.7 82.7 216 85.2 220.2 85.6 223.4 85.6 232.8 86.1 234.6 96.1 236.1 115.8 238.8 129.6 240.1zM41.5 196.4 42.8 198 42.6 199.3 39.4 199.2 38.8 198 38.2 196.5 41.5 196.4zM43.4 196.4 44.7 195.8 48.2 197.9 51.3 199.1 50.4 199.7 45.9 199.5 44.3 197.9 43.4 196.4zM64.1 216.2 65.9 218.6 66.7 219.5 68.3 220.1 68.8 218.7 67.9 216.9 65.2 214.9 64.1 215 64.1 216.2zM62.7 224.9 64.5 228 65.7 230 64.2 230.2 62.9 229C62.9 229 62.2 227.6 62.2 227.1 62.2 226.7 62.2 225 62.2 225L62.7 224.9z"
+            />
+      </svg>
+      <svg style={{width: "250px", height: "250px"}} >
+            <path
+                fill="rgb(211, 211, 211)"
+                d="M127.3 19.2 20.6 5.8 6.5 94.2 119.8 107.8 127.3 19.2z"
+            />
+      </svg>
+      <p>Hello</p> */}
+      
+   
+        
+      
+        <br/>
+        <center>
+        <p>
+        {this.state.selectedStates.map((item, index) => {
+          return (
+            <span>{index ? ', ': ''}{item}</span>
+          )
+        })}
+        </p>
+        </center>
+        </div>
+      
+        
+        <div className="column" style={{ width: "36%", marginLeft: "2%"}}>
+          <div style={{float: "left",  width: "40%"}}> 
+            <span style={{fontSize: "30px"}}>{this.state.hoverState}</span>
+            <br/>
+            <span style={{fontSize: "20px"}}>Population: 3.5 million</span>
+            
+          </div>
+          <div style={{float: "right", width: "60%"}}>
+          <Colorado />
+          </div>
+          
+        
+        
+       
+        </div> 
+
+
+      </div>
    </>
   )
  }

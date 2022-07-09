@@ -11,7 +11,9 @@ path:hover {
 */ 
 
 html, body {
-    zoom: 1.05; 
+    font-family: 'Edu SA Beginner', cursive;
+    cursor: crosshair;
+    zoom: 1.1; 
     max-width: 100%;
     overflow-x: hidden;
     -webkit-touch-callout: none; /* iOS Safari */
@@ -22,4 +24,27 @@ html, body {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
+
+p {
+    font-size: 30px; 
+    line-height: 30px;
+}
+
+.column {
+    /* padding-left: 50px; */ 
+    float: left;
+  }
+
+
+  .row {
+    padding-left: 50px;
+    padding-top: 20px; 
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 
