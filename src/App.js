@@ -439,14 +439,35 @@ class App extends React.Component {
   return (
     
    <>
-
-      <div className="row">
-        <div className="column" style={{float: "left", width: "62%", maxWidth: "1000px"}}>
-            <br/>
-            <div onMouseOver={this.hoverHandler}>
-          <USAMap customize={this.statesCustomConfig()} onClick={this.mapHandler} /> 
-          </div>
+ 
+       <center>
+       <br/>
+              <div onMouseOver={this.hoverHandler}>
+            <USAMap customize={this.statesCustomConfig()} onClick={this.mapHandler} /> 
+            </div>
         
+          <br/>
+      
+          <p>
+          {this.state.selectedStates.map((item, index) => {
+            return (
+              <span>{index ? ', ': ''}{item}</span>
+            )
+          })}
+          </p>
+        
+          </center>
+          </>
+          
+  
+  )
+ }
+}
+
+export default App;
+
+
+      
 
      {/* 
       <svg style={{width: "250px", height: "250px"}} >
@@ -462,9 +483,15 @@ class App extends React.Component {
             />
       </svg>
       <p>Hello</p> */}
-      
-   
-        
+
+
+          {/* 
+      <div className="row">
+        <div className="column" style={{float: "left", width: "62%", maxWidth: "1000px"}}>
+            <br/>
+            <div onMouseOver={this.hoverHandler}>
+          <USAMap customize={this.statesCustomConfig()} onClick={this.mapHandler} /> 
+          </div>
       
         <br/>
         <center>
@@ -476,9 +503,7 @@ class App extends React.Component {
         })}
         </p>
         </center>
-        </div>
-      
-        
+        </div>        
         <div className="column" style={{ width: "36%", marginLeft: "2%"}}>
           <div style={{float: "left",  width: "40%"}}> 
             <span style={{fontSize: "30px"}}>{this.state.hoverState}</span>
@@ -497,9 +522,4 @@ class App extends React.Component {
 
 
       </div>
-   </>
-  )
- }
-}
-
-export default App;
+      */}
