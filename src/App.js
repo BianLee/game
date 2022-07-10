@@ -2,8 +2,9 @@ import React from "react";
 import "./App.css";
 import USAMap from "react-usa-map";
 import Colorado from "./data/Colorado";
-import Gop from "./data/Gop";
+import Colleges from "./data/Colleges.js"
 import Democratic from "./data/Democratic";
+import { toHaveDisplayValue } from "@testing-library/jest-dom/dist/matchers";
 
 var globalStateID = -1;
 const stateArray = [
@@ -58,14 +59,135 @@ const stateArray = [
   "Wisconsin",
   "Wyoming",
 ];
+const cityArray = [
+  "Birmingham",
+  "Kenai",
+  "Scottsdale",
+  "Bentonville",
+  "Pasadena",
+  "Boulder",
+  "Bridgeport",
+  "Dover",
+  "Jacksonville",
+  "Atlanta",
+  "Kailua-Kona",
+  "Boise",
+  "Champaign",
+  "Bloomington",
+  "Des Moines",
+  "Wichita",
+  "Lexington",
+  "Baton Rouge",
+  "Lewiston",
+  "College Park",
+  "Boston",
+  "Grand Rapids",
+  "Minneapolis",
+  "Hattiesburg",
+  "St. Louis",
+  "Helena",
+  "Lincoln",
+  "Henderson",
+  "Manchester",
+  "Trenton",
+  "Santa Fe",
+  "Rochester",
+  "Charlotte",
+  "Bismarck",
+  "Columbus",
+  "Oklahoma City",
+  "Eugene",
+  "Philadelphia",
+  "Newport",
+  "Charleston",
+  "Sioux Falls",
+  "Knoxville",
+  "Austin",
+  "Salt Lake City",
+  "Montpelier",
+  "Fairfax",
+  "Tacoma",
+  "Huntington",
+  "Madison",
+  "Casper",
+];
+
+const cityPopulation = [
+  "210,928",
+  "7799",
+  "254,995",
+  "52,070",
+  "142,017",
+  "108,777",
+  "145,014",
+  "37,872",
+  "902,488",
+  "497,642",
+  "22,972",
+  "228,057",
+  "88,288",
+  "84,691",
+  "215,408",
+  "390,566",
+  "322,200",
+  "222,191",
+  "32,853",
+  "32,221",
+  "689,326",
+  "199,417",
+  "424,536",
+  "46,010",
+  "304,709",
+  "32,655",
+  "286,388",
+  "309,955",
+  "112,441",
+  "83,387",
+  "84,418",
+  "206,357",
+  "873,570",
+  "73,435",
+  "889,079",
+  "649,821",
+  "170,457",
+  "1,603,797",
+  "24,697",
+  "137,041",
+  "180,927",
+  "187,487",
+  "965,872",
+  "200,133",
+  "7,434",
+  "1,150,309",
+  "215,766",
+  "201,546",
+  "258,366",
+  "58,287"
+]
+
+const directionArray = [
+  "1. Select your home state and a hometown",
+  "2. Select five states where you'll start your campaign.",
+  "3. Select your alma mater. It determines your network / connections and other resources.",
+  "4. Select your political alignment. "
+]
+
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       stateID: -1,
+      hoverUniversity: "", 
+      selectedUniversity: "", 
+      homeState: "",
+      homeTownPopulation: 0, 
+      homeTown: "",
       selectedStates: [],
       hoverState: "",
-      gameStage: 1,
+      gameStage: 1, 
+      direction: "", 
+      popupBoolean: false, 
       stateColors: [
         "",
         "",
@@ -170,7 +292,19 @@ class App extends React.Component {
         "navy",
         "#CC0000",
       ],
+
     };
+    this.updateHoverUniversity = this.updateHoverUniversity.bind(this)
+    this.deleteHoverUniversity = this.deleteHoverUniversity.bind(this)
+    this.handleHoverUniversityClick = this.handleHoverUniversityClick.bind(this)
+  }
+
+
+  componentDidMount() {
+    this.setState({
+      direction: directionArray[this.state.gameStage-1],
+    })
+  
   }
 
   findStateId(e) {
@@ -280,10 +414,45 @@ class App extends React.Component {
   }
 
   handleNext(e) {
+    let newArray = Array.from(this.state.stateColors);
+    newArray = newArray.filter((item) => item == "");
     console.log("Clicked Next");
     this.setState({
+      stateColors: newArray,
       gameStage: this.state.gameStage + 1,
+      direction: directionArray[this.state.gameStage],
     });
+  
+  }
+
+  popup(e) {
+    console.log("popup clicked"); 
+    this.setState({
+      popupBoolean: true, 
+    })
+  }
+
+  updateHoverUniversity = (name) => {
+    if (this.state.popupBoolean == false) {
+      this.setState({
+        hoverUniversity: name 
+      })
+    }
+  }
+  deleteHoverUniversity = () => {
+    if (this.state.popupBoolean == false) {
+      this.setState({
+        hoverUniversity: "" 
+      })
+    } 
+  }
+  handleHoverUniversityClick = (name) => {
+    if (this.state.popupBoolean == false) {
+      console.log(name)
+      this.setState({
+        selectedUniversity: name
+      })
+    }
   }
 
   hoverHandler = (e) => {
@@ -292,10 +461,20 @@ class App extends React.Component {
       newArray[globalStateID] = "";
     }
     this.findStateId(e);
-    this.setState({
+    {
+      /* this.setState({
       hoverState: stateArray[globalStateID],
+    }); */
+    }
+    this.setState({
+      hoverState: e.target.dataset.name,
     });
-    if (e.target.dataset.name != undefined && newArray[globalStateID] == "") {
+
+    console.log(newArray[globalStateID]);
+    if (
+      e.target.dataset.name != undefined &&
+      (newArray[globalStateID] == "" || newArray[globalStateID] == undefined)
+    ) {
       newArray[globalStateID] = "#e3e1e1";
     }
     this.setState({
@@ -304,45 +483,53 @@ class App extends React.Component {
   };
 
   mapHandler = (e) => {
-    this.findStateId(e);
-
-    if (this.state.selectedStates.length < 3) {
+    if (this.state.gameStage == 1) {
+      let newArray = Array.from(this.state.stateColors);
+      newArray = newArray.filter((item) => item == "");
+      newArray[globalStateID] = "darkorange";
+      this.findStateId(e);
       this.setState({
-        selectedStates: [
-          ...this.state.selectedStates,
-          stateArray[globalStateID],
-        ],
+        homeTown: cityArray[globalStateID],
+        homeState: stateArray[globalStateID],
+        homeTownPopulation: cityPopulation[globalStateID],
+        stateColors: newArray,
+      });
+    } else if (this.state.gameStage == 2) {
+      this.findStateId(e);
+      if (this.state.selectedStates.length < 5) {
+        this.setState({
+          selectedStates: [
+            ...this.state.selectedStates,
+            stateArray[globalStateID],
+          ],
+        });
+      }
+      let newArray = Array.from(this.state.stateColors);
+      if (
+        (newArray[globalStateID] == "#e3e1e1" ||
+          newArray[globalStateID] == "") &&
+        this.state.selectedStates.length < 5
+      ) {
+        newArray[globalStateID] = this.state.lastElectionColors[globalStateID];
+      } else if (newArray[globalStateID] == "#CC0000") {
+        newArray[globalStateID] = "";
+        this.setState({
+          selectedStates: this.state.selectedStates.filter(
+            (item) => item != stateArray[globalStateID]
+          ),
+        });
+      } else if (newArray[globalStateID] == "navy") {
+        newArray[globalStateID] = "";
+        this.setState({
+          selectedStates: this.state.selectedStates.filter(
+            (item) => item != stateArray[globalStateID]
+          ),
+        });
+      }
+      this.setState({
+        stateColors: newArray,
       });
     }
-
-    // console.log(globalStateID);
-
-    let newArray = Array.from(this.state.stateColors);
-
-    if (
-      (newArray[globalStateID] == "#e3e1e1" || newArray[globalStateID] == "") &&
-      this.state.selectedStates.length < 3
-    ) {
-      newArray[globalStateID] = this.state.lastElectionColors[globalStateID];
-    } else if (newArray[globalStateID] == "#CC0000") {
-      newArray[globalStateID] = "";
-      this.setState({
-        selectedStates: this.state.selectedStates.filter(
-          (item) => item != stateArray[globalStateID]
-        ),
-      });
-    } else if (newArray[globalStateID] == "navy") {
-      newArray[globalStateID] = "";
-      this.setState({
-        selectedStates: this.state.selectedStates.filter(
-          (item) => item != stateArray[globalStateID]
-        ),
-      });
-    }
-
-    this.setState({
-      stateColors: newArray,
-    });
 
     /* 
     let newArray = Array.from(this.state.stateColors);
@@ -532,20 +719,31 @@ class App extends React.Component {
       <>
         <br />
         <center>
+          {this.state.popupBoolean == true ? <>
+            <div style={{textAlign: "left", padding: "20px", width: "700px", height: "500px", position: "absolute", top: "50%", left: "50%", zIndex: "1000", borderRadius: "5px",  backgroundColor: "gray", transform: "translate(-50%, -50%)"}}>
+              <span style={{position: "fixed", top: "10px", right: "10px", fontSize: "25px", color: "white", fontFamily:"", cursor: "pointer"}} onClick={() => this.setState({popupBoolean: false})}>X</span>
+              <span style={{fontSize: "20px", color: "white"}}>
+                Notable alumni network and connections: 
+                <br/><br/>• University of Arizona: Ron Barber, Stacy Brenner, Jeffrey Buchanan, David Dewhurst
+                <br/>• University of Maryland: Mike Parson, Eric Swalwell, Dutch Ruppersberger
+                <br/>• Louisiana State University: Barry Ivey, 
+                </span>
+            </div>
+          
+          </> : <></>}
           {this.state.gameStage == 0 ? (
             <>
               <div style={{ height: "100%" }}>
                 <span style={{ fontSize: "50px", height: "100px" }}>
                   Which political party do you represent?
                 </span>
-                <Gop />
+               {/* <Gop />*/} 
               </div>
             </>
           ) : (
             <></>
           )}
-
-          {this.state.gameStage == 1 ? (
+          {this.state.gameStage == 1 || this.state.gameStage == 2 ? (
             <>
               <div onMouseOver={this.hoverHandler}>
                 <USAMap
@@ -553,39 +751,194 @@ class App extends React.Component {
                   onClick={this.mapHandler}
                 />
               </div>
-              <br />
+
               <p>
-                {this.state.selectedStates.map((item, index) => {
-                  return (
+                {this.state.gameStage == 2 ? (
+                  <>
+                    {this.state.selectedStates.map((item, index) => {
+                      return (
+                        <span>
+                          {index ? ", " : ""}
+                          {item}
+                        </span>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <>
                     <span>
-                      {index ? ", " : ""}
-                      {item}
+                      {this.state.homeTown != "" ? (
+                        <>
+                          {this.state.homeTown}, {this.state.homeState}
+                          <p style={{fontSize: "18px", marginTop: "10px"}}>Population: {this.state.homeTownPopulation}</p> 
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </span>
-                  );
-                })}
+                  </>
+                )}
               </p>
-              {this.state.selectedStates.length > 2 ? (
+              <div
+                style={{
+                  position: "fixed",
+                  bottom: 40,
+                  left: 30,
+                }}
+              >
                 <span
                   style={{
-                    position: "fixed",
-                    bottom: 30,
-                    right: 40,
-                    fontSize: "25px",
-                    backgroundColor: "black",
+                    position: "relative",
                     padding: "10px",
+                    fontSize: "20px",
                     paddingLeft: "20px",
                     paddingRight: "20px",
-                    color: "white",
+                    marginLeft: "5px",
+                    backgroundColor: "#f2f2f2",
                     borderRadius: "5px",
-                    cursor: "pointer",
                   }}
-                  onClick={(e) => this.handleNext(e)}
                 >
-                  →
+                  {this.state.direction}
                 </span>
+                <span
+                  style={{
+                    fontSize: "20px",
+                    width: "500px",
+                    maxWidth: "35px",
+                    marginLeft: "6px",
+
+                    borderRadius: "5px",
+                    width: "100px",
+                    display: "inline-block",
+                  }}
+                >
+                  {this.state.hoverState == "" ||
+                  this.state.hoverState == undefined ? (
+                    <> {"\u00A0"}</>
+                  ) : (
+                    <>{this.state.hoverState}</>
+                  )}
+                </span>
+              </div>
+              {(this.state.gameStage == 2 &&
+                this.state.selectedStates.length > 4) ||
+              (this.state.gameStage == 1 && this.state.homeTown != "") ? (
+                <div
+                  style={{
+                    position: "fixed",
+                    bottom: 40,
+                    right: 30,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "20px",
+                      backgroundColor: "black",
+                      padding: "10px",
+                      paddingLeft: "20px",
+                      paddingRight: "20px",
+                      color: "white",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                    }}
+                    onClick={(e) => this.handleNext(e)}
+                  >
+                    →
+                  </span>
+                </div>
               ) : (
                 <></>
               )}
+            </>
+          ) : (
+            <></>
+          )}
+          {this.state.gameStage == 3 ? (
+            <>
+              <div style={{ height: "100%" }}>
+
+                <Colleges popupBoolean={this.state.popupBoolean} selectedUniversity={this.state.selectedUniversity} handleHoverUniversityClick={this.handleHoverUniversityClick} deleteHoverUniversity={this.deleteHoverUniversity} updateHoverUniversity={this.updateHoverUniversity} />
+                {this.state.popupBoolean == false ? <p>{this.state.selectedUniversity}</p> : <></>}
+               
+                <br />
+                <br />
+              </div>
+              <div
+                style={{
+                  position: "fixed",
+                  bottom: 40,
+                  left: 30,
+                }}
+              >
+               <span
+                  style={{
+                    position: "relative",
+                    padding: "10px",
+                    fontSize: "20px",
+                    paddingLeft: "20px",
+                    paddingRight: "20px",
+                    marginLeft: "5px",
+                    backgroundColor: "#f2f2f2",
+                    borderRadius: "5px",
+                  }}
+                >
+                  {this.state.direction}
+                </span>
+                <span
+                  style={{
+                    fontSize: "20px",
+                    
+
+                    borderRadius: "5px",
+                    width: "260px",
+                    display: "inline-block",
+                  }}
+                >
+                    {this.state.hoverUniversity}
+                </span>
+                <div
+                  style={{
+                    position: "fixed",
+                    bottom: 40,
+                    right: 30,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "20px",
+                      backgroundColor: "#f2f2f2",
+                      padding: "10px",
+                      paddingLeft: "20px",
+                      paddingRight: "20px",
+                      marginRight: "5px",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                    }}
+                    onClick={(e) => this.popup(e)}
+                  >
+                    More Info
+                  </span>
+                {this.state.selectedUniversity != "" ? 
+                 
+                  <span
+                    style={{
+                      fontSize: "20px",
+                      backgroundColor: "black",
+                      padding: "10px",
+                      paddingLeft: "20px",
+                      paddingRight: "20px",
+                      color: "white",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                    }}
+                    onClick={(e) => this.handleNext(e)}
+                  >
+                    →
+                  </span>
+                 : <></>}
+                </div>
+              
+              </div>
             </>
           ) : (
             <></>

@@ -4,12 +4,7 @@ class Gop extends React.Component {
   render() {
     return (
       <>
-        <svg
-          viewBox="0 0 1800 1200"
-          width="600px"
-          height="521px"
-          style={{ marginTop: "50px" }}
-        >
+        <svg  viewBox="0 0 600 521" style={{ marginTop: "50px" }}>
           <defs id="defs4" />
           <g id="layer1">
             <path
