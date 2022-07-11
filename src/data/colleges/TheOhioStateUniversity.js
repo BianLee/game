@@ -1,6 +1,6 @@
 import React from "react";
 
-class OhioStateUniversity extends React.Component {
+class TheOhioStateUniversity extends React.Component {
   render() {
     return (
       <>
@@ -12,4 +12,4 @@ class OhioStateUniversity extends React.Component {
   }
 }
 
-export default OhioStateUniversity;
+export default TheOhioStateUniversity;

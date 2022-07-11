@@ -1,5 +1,5 @@
 import React from "react"
-import OhioStateUniversity from "./colleges/OhioStateUniversity";
+import OhioStateUniversity from "./colleges/TheOhioStateUniversity";
 import UniversityOfMaryland from "./colleges/UniversityOfMaryland";
 import LouisianaStateUniversity from "./colleges/LouisianaStateUniversity"
 import UniversityOfMississippi from "./colleges/UniversityOfMississippi"
@@ -59,7 +59,7 @@ class Colleges extends React.Component {
                   <div className="svgContainer grid-item" data-set="University of Texas at Austin" style={{backgroundColor: this.props.selectedUniversity == "University of Texas at Austin" ? "#b3b1b1" : "", opacity: this.props.popupBoolean == true ? "0.3" : ""}}>
                     <UniversityOfTexasAtAustin />
                   </div>
-                  <div className="svgContainer grid-item" data-set="Ohio State University" style={{backgroundColor: this.props.selectedUniversity == "Ohio State University" ? "#b3b1b1" : "", opacity: this.props.popupBoolean == true ? "0.3" : ""}}>
+                  <div className="svgContainer grid-item" data-set="The Ohio State University" style={{backgroundColor: this.props.selectedUniversity == "The Ohio State University" ? "#b3b1b1" : "", opacity: this.props.popupBoolean == true ? "0.3" : ""}}>
                     <OhioStateUniversity />
                   </div>
                   <div className="svgContainer grid-item" data-set="University of Wyoming" style={{backgroundColor: this.props.selectedUniversity == "University of Wyoming" ? "#b3b1b1" : "", opacity: this.props.popupBoolean == true ? "0.3" : ""}}>

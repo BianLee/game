@@ -167,8 +167,8 @@ const cityPopulation = [
 
 const directionArray = [
   "1. Select your home state and a hometown",
-  "2. Select five states where you'll start your campaign.",
-  "3. Select your alma mater. It determines your network / connections and other resources.",
+  "2. Select your alma mater.",
+  "3. Select five states where you'll start your campaign.",
   "4. Select your political alignment. "
 ]
 
@@ -430,6 +430,7 @@ class App extends React.Component {
     this.setState({
       popupBoolean: true, 
     })
+
   }
 
   updateHoverUniversity = (name) => {
@@ -494,7 +495,7 @@ class App extends React.Component {
         homeTownPopulation: cityPopulation[globalStateID],
         stateColors: newArray,
       });
-    } else if (this.state.gameStage == 2) {
+    } else if (this.state.gameStage == 3) {
       this.findStateId(e);
       if (this.state.selectedStates.length < 5) {
         this.setState({
@@ -719,17 +720,32 @@ class App extends React.Component {
       <>
         <br />
         <center>
-          {this.state.popupBoolean == true ? <>
-            <div style={{textAlign: "left", padding: "20px", width: "700px", height: "500px", position: "absolute", top: "50%", left: "50%", zIndex: "1000", borderRadius: "5px",  backgroundColor: "gray", transform: "translate(-50%, -50%)"}}>
+          {this.state.popupBoolean == true && this.state.gameStage == 2 ? <>
+            <div style={{textAlign: "left", padding: "20px", width: "700px", height: "550px", position: "absolute", top: "50%", left: "50%", zIndex: "1000", borderRadius: "5px",  backgroundColor: "gray", transform: "translate(-50%, -50%)"}}>
               <span style={{position: "fixed", top: "10px", right: "10px", fontSize: "25px", color: "white", fontFamily:"", cursor: "pointer"}} onClick={() => this.setState({popupBoolean: false})}>X</span>
               <span style={{fontSize: "20px", color: "white"}}>
-                Notable alumni network and connections: 
-                <br/><br/>• University of Arizona: Ron Barber, Stacy Brenner, Jeffrey Buchanan, David Dewhurst
-                <br/>• University of Maryland: Mike Parson, Eric Swalwell, Dutch Ruppersberger
-                <br/>• Louisiana State University: Barry Ivey, 
-                </span>
-            </div>
+                Your alma mater provides alumni network and resources, both of which are essential for spreading awareness of your campaign and receiving endorsements.  
           
+                <br/><br/>• <span style={{color: "gold"}}>University of Arizona</span>: Ron Barber, Stacy Brenner, Jeffrey Buchanan
+                <br/>•  <span style={{color: "gold"}}>University of Maryland</span>: Mike Parson, Eric Swalwell, Dutch Ruppersberger
+                <br/>•   <span style={{color: "gold"}}>Louisiana State University</span>: Amy Brittain, Barry Ivey, James Carville, John Bel Edwards
+                <br/>• <span style={{color: "gold"}}>University of Mississippi</span>: Roger Wicker, Chip Pickering, Trent Kelly
+                <br/>• <span style={{color: "gold"}}>University of Florida</span>: Marco Rubio, Debbie Schultz, Bill Nelson, Pam Bondi
+                <br/>• <span style={{color: "gold"}}>University of Texas at Austin</span>: Rex Tillerson, Neil deGrasse Tyson, Jenna Bush
+                <br/>• <span style={{color: "gold"}}>The Ohio State University</span>: Les Wexner, Marcia Fudge, Jim Jordan
+                <br/>• <span style={{color: "gold"}}>University of Wyoming</span>: Dick Cheney, Jerry Buss, Cynthia Lummis
+                <br/>• <span style={{color: "gold"}}>University of South Dakota</span>: John Thune, Dusty Johnson, Scott DesJarlais
+                <br/>• <span style={{color: "gold"}}>University of Colorado Boulder</span>: Christine Arguello, Joe Neguse, John Branch
+                <br/>• <span style={{color: "gold"}}>University of Alabama</span>: Jimmy Wales, Kathryn Stockett, Joe Scarborough
+                <br/>• <span style={{color: "gold"}}>Indiana University Bloomington</span>: Robert Gates, Kevin Kline
+                <br/>• <span style={{color: "gold"}}>University of Missouri</span>: Tim Kaine, Claire McCaskill, Martin Heinrich
+                <br/>• <span style={{color: "gold"}}>University of Arkansas</span>: Tim Hutchinson, Jim C. Walton, J. William Fulbright
+                <br/>• <span style={{color: "gold"}}>University of Tennessee Knoxville</span>: Jim DeMint, Bart Gordon, Scott Kelly
+                <br/>• <span style={{color: "gold"}}>University of Connecticut</span>: Joe Courtney, Warren Mosler, Robert D. Kaplan
+                <br/>• <span style={{color: "gold"}}>Pennsylvania State University</span>: Kelly Ayotte, Dan Bongino, Terry Pegula
+                <br/>• <span style={{color: "gold"}}>University of Delaware</span>: Joe Biden, Chris Christie, Tom Carper
+              </span>
+            </div>
           </> : <></>}
           {this.state.gameStage == 0 ? (
             <>
@@ -743,7 +759,7 @@ class App extends React.Component {
           ) : (
             <></>
           )}
-          {this.state.gameStage == 1 || this.state.gameStage == 2 ? (
+          {this.state.gameStage == 1 || this.state.gameStage == 3 ? (
             <>
               <div onMouseOver={this.hoverHandler}>
                 <USAMap
@@ -753,7 +769,7 @@ class App extends React.Component {
               </div>
 
               <p>
-                {this.state.gameStage == 2 ? (
+                {this.state.gameStage == 3 ? (
                   <>
                     {this.state.selectedStates.map((item, index) => {
                       return (
@@ -820,16 +836,18 @@ class App extends React.Component {
                   )}
                 </span>
               </div>
-              {(this.state.gameStage == 2 &&
-                this.state.selectedStates.length > 4) ||
-              (this.state.gameStage == 1 && this.state.homeTown != "") ? (
-                <div
+              <div
                   style={{
                     position: "fixed",
                     bottom: 40,
                     right: 30,
                   }}
                 >
+                   
+              {(this.state.gameStage == 3 &&
+                this.state.selectedStates.length > 4) ||
+              (this.state.gameStage == 1 && this.state.homeTown != "") ? (
+               
                   <span
                     style={{
                       fontSize: "20px",
@@ -845,15 +863,17 @@ class App extends React.Component {
                   >
                     →
                   </span>
-                </div>
+               
               ) : (
                 <></>
               )}
+              
+                  </div>
             </>
           ) : (
             <></>
           )}
-          {this.state.gameStage == 3 ? (
+          {this.state.gameStage == 2 ? (
             <>
               <div style={{ height: "100%" }}>
 
@@ -916,7 +936,7 @@ class App extends React.Component {
                     }}
                     onClick={(e) => this.popup(e)}
                   >
-                    More Info
+                    Info
                   </span>
                 {this.state.selectedUniversity != "" ? 
                  
