@@ -185,7 +185,7 @@ class App extends React.Component {
       homeTown: "",
       selectedStates: [],
       hoverState: "",
-      gameStage: 0, 
+      gameStage: 1, 
       direction: "", 
       popupBoolean: false, 
       stateColors: [
