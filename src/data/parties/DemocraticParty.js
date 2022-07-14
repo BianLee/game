@@ -1,12 +1,11 @@
 import React from "react";
 
-class Democratic extends React.Component {
+class DemocraticParty extends React.Component {
   render() {
     return (
       <>
         <svg
-          viewBox="0 0 70000 70000"
-          width="100%"
+          viewBox="0 0 12000 11700"
           style={{ marginTop: "50px" }}
         >
           <g id="layer101" fill="#031bbb" stroke="none"></g>
@@ -28,4 +27,4 @@ class Democratic extends React.Component {
   }
 }
 
-export default Democratic;
+export default DemocraticParty;

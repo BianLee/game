@@ -1,6 +1,6 @@
 import React from "react";
 
-class Gop extends React.Component {
+class RepublicanParty extends React.Component {
   render() {
     return (
       <>
@@ -67,4 +67,4 @@ class Gop extends React.Component {
   }
 }
 
-export default Gop;
+export default RepublicanParty;

@@ -3,7 +3,7 @@ import "./App.css";
 import USAMap from "react-usa-map";
 import Colorado from "./data/Colorado";
 import Colleges from "./data/Colleges.js"
-import Democratic from "./data/Democratic";
+import Parties from "./data/Parties.js"
 import { toHaveDisplayValue } from "@testing-library/jest-dom/dist/matchers";
 
 var globalStateID = -1;
@@ -167,7 +167,7 @@ const cityPopulation = [
 
 const directionArray = [
   "1. Select your home state and a hometown",
-  "2. Select your alma mater.",
+  "2. Select your alma mater",
   "3. Select five states where you'll start your campaign.",
   "4. Select your political alignment. "
 ]
@@ -185,7 +185,7 @@ class App extends React.Component {
       homeTown: "",
       selectedStates: [],
       hoverState: "",
-      gameStage: 1, 
+      gameStage: 0, 
       direction: "", 
       popupBoolean: false, 
       stateColors: [
@@ -719,50 +719,37 @@ class App extends React.Component {
     return (
       <>
         <br />
+        
+
         <center>
           {this.state.popupBoolean == true && this.state.gameStage == 2 ? <>
-            <div style={{textAlign: "left", padding: "20px", width: "700px", height: "550px", position: "absolute", top: "50%", left: "50%", zIndex: "1000", borderRadius: "5px",  backgroundColor: "gray", transform: "translate(-50%, -50%)"}}>
+            <div style={{textAlign: "left", padding: "20px", width: "700px", height: "350px", position: "absolute", top: "50%", left: "50%", zIndex: "1000", borderRadius: "5px",  backgroundColor: "#590159", transform: "translate(-50%, -50%)"}}>
               <span style={{position: "fixed", top: "10px", right: "10px", fontSize: "25px", color: "white", fontFamily:"", cursor: "pointer"}} onClick={() => this.setState({popupBoolean: false})}>X</span>
-              <span style={{fontSize: "20px", color: "white"}}>
-                Your alma mater provides alumni network and resources, both of which are essential for spreading awareness of your campaign and receiving endorsements.  
+              <span style={{fontSize: "25px", color: "white"}}>
+                Your alma mater determines alumni network and resources, both of which are essential for spreading awareness of your political campaign and receiving endorsements. 
+                You also get a geographical advantage at the state where you attended its flagship university.
           
-                <br/><br/>• <span style={{color: "gold"}}>University of Arizona</span>: Ron Barber, Stacy Brenner, Jeffrey Buchanan
-                <br/>•  <span style={{color: "gold"}}>University of Maryland</span>: Mike Parson, Eric Swalwell, Dutch Ruppersberger
-                <br/>•   <span style={{color: "gold"}}>Louisiana State University</span>: Amy Brittain, Barry Ivey, James Carville, John Bel Edwards
-                <br/>• <span style={{color: "gold"}}>University of Mississippi</span>: Roger Wicker, Chip Pickering, Trent Kelly
-                <br/>• <span style={{color: "gold"}}>University of Florida</span>: Marco Rubio, Debbie Schultz, Bill Nelson, Pam Bondi
-                <br/>• <span style={{color: "gold"}}>University of Texas at Austin</span>: Rex Tillerson, Neil deGrasse Tyson, Jenna Bush
-                <br/>• <span style={{color: "gold"}}>The Ohio State University</span>: Les Wexner, Marcia Fudge, Jim Jordan
-                <br/>• <span style={{color: "gold"}}>University of Wyoming</span>: Dick Cheney, Jerry Buss, Cynthia Lummis
-                <br/>• <span style={{color: "gold"}}>University of South Dakota</span>: John Thune, Dusty Johnson, Scott DesJarlais
-                <br/>• <span style={{color: "gold"}}>University of Colorado Boulder</span>: Christine Arguello, Joe Neguse, John Branch
-                <br/>• <span style={{color: "gold"}}>University of Alabama</span>: Jimmy Wales, Kathryn Stockett, Joe Scarborough
-                <br/>• <span style={{color: "gold"}}>Indiana University Bloomington</span>: Robert Gates, Kevin Kline
-                <br/>• <span style={{color: "gold"}}>University of Missouri</span>: Tim Kaine, Claire McCaskill, Martin Heinrich
-                <br/>• <span style={{color: "gold"}}>University of Arkansas</span>: Tim Hutchinson, Jim C. Walton, J. William Fulbright
-                <br/>• <span style={{color: "gold"}}>University of Tennessee Knoxville</span>: Jim DeMint, Bart Gordon, Scott Kelly
-                <br/>• <span style={{color: "gold"}}>University of Connecticut</span>: Joe Courtney, Warren Mosler, Robert D. Kaplan
-                <br/>• <span style={{color: "gold"}}>Pennsylvania State University</span>: Kelly Ayotte, Dan Bongino, Terry Pegula
-                <br/>• <span style={{color: "gold"}}>University of Delaware</span>: Joe Biden, Chris Christie, Tom Carper
-              </span>
+           
+              </span> 
             </div>
           </> : <></>}
           {this.state.gameStage == 0 ? (
             <>
-              <div style={{ height: "100%" }}>
-                <span style={{ fontSize: "50px", height: "100px" }}>
-                  Which political party do you represent?
-                </span>
-               {/* <Gop />*/} 
-              </div>
+            <Parties /> 
+             <div style={{position: "fixed", bottom: 0, left: 0, width: "100%", height: "58px", 
+                    fontSize: "20px", color: "black", background: "linear-gradient(90deg, rgba(0,0,128,1) 0%, rgba(204,0,0,1) 100%)",
+                    fontFamily:"", cursor: "pointer"}}></div>
             </>
           ) : (
             <></>
           )}
+
+          
           {this.state.gameStage == 1 || this.state.gameStage == 3 ? (
             <>
               <div onMouseOver={this.hoverHandler}>
                 <USAMap
+                  style={{position: "fixed", top: "50px"}}
                   customize={this.statesCustomConfig()}
                   onClick={this.mapHandler}
                 />
@@ -782,11 +769,12 @@ class App extends React.Component {
                   </>
                 ) : (
                   <>
-                    <span>
+                    <span style={{zIndex: "2000"}}>
+                      
                       {this.state.homeTown != "" ? (
                         <>
                           {this.state.homeTown}, {this.state.homeState}
-                          <p style={{fontSize: "18px", marginTop: "10px"}}>Population: {this.state.homeTownPopulation}</p> 
+                          <p style={{fontSize: "18px", marginTop: "10px", }}>Population: {this.state.homeTownPopulation}</p> 
                         </>
                       ) : (
                         <></>
@@ -795,86 +783,118 @@ class App extends React.Component {
                   </>
                 )}
               </p>
-              <div
-                style={{
-                  position: "fixed",
-                  bottom: 40,
-                  left: 30,
-                }}
-              >
-                <span
+
+
+              <div style={{position: "fixed", bottom: 0, left: 0, width: "100%", height: "58px", 
+                    fontSize: "20px", color: "black", background: "linear-gradient(90deg, rgba(0,0,128,1) 0%, rgba(204,0,0,1) 100%)",
+                    fontFamily:"", cursor: "pointer"}}>
+                <div
                   style={{
-                    position: "relative",
-                    padding: "10px",
                     fontSize: "20px",
-                    paddingLeft: "20px",
-                    paddingRight: "20px",
-                    marginLeft: "5px",
-                    backgroundColor: "#f2f2f2",
-                    borderRadius: "5px",
+                    position: "absolute",
+                    left: "2%", 
+                    bottom: "30%",
+                    color: "white",
                   }}
                 >
                   {this.state.direction}
-                </span>
-                <span
+                </div>
+                <div
                   style={{
-                    fontSize: "20px",
-                    width: "500px",
-                    maxWidth: "35px",
-                    marginLeft: "6px",
-
-                    borderRadius: "5px",
-                    width: "100px",
-                    display: "inline-block",
+                    fontSize: "20px",   
+                    position: "relative",       
+                    textAlign: "center",
+                    bottom: "14%",
+                    color: "white",
                   }}
                 >
+                  <p style={{fontSize: "20px"}}> 
                   {this.state.hoverState == "" ||
                   this.state.hoverState == undefined ? (
                     <> {"\u00A0"}</>
                   ) : (
                     <>{this.state.hoverState}</>
-                  )}
-                </span>
-              </div>
-              <div
+                  )}</p>
+                </div>
+
+                {this.state.gameStage == 1 ? <> {this.state.homeTown != "" ? <div
                   style={{
-                    position: "fixed",
-                    bottom: 40,
-                    right: 30,
+                    fontSize: "20px",
+                    position: "absolute",
+                    right: "2%", 
+                    bottom: "30%",
+                    color: "white"
                   }}
-                >
-                   
-              {(this.state.gameStage == 3 &&
-                this.state.selectedStates.length > 4) ||
-              (this.state.gameStage == 1 && this.state.homeTown != "") ? (
+                  onClick={(e) => this.handleNext(e)}
+                >Next →
+                </div> : <></>}</> : <></>}
+                
+                {this.state.gameStage == 3 ? <> {this.state.selectedStates.length == 5 ? <div
+                  style={{
+                    fontSize: "20px",
+                    position: "absolute",
+                    right: "2%", 
+                    bottom: "30%",
+                    color: "white"
+                  }}
+                  onClick={(e) => this.handleNext(e)}
+                >Next →
+                </div> : <></>}</> : <></>}
                
-                  <span
-                    style={{
-                      fontSize: "20px",
-                      backgroundColor: "black",
-                      padding: "10px",
-                      paddingLeft: "20px",
-                      paddingRight: "20px",
-                      color: "white",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                    }}
-                    onClick={(e) => this.handleNext(e)}
-                  >
-                    →
-                  </span>
-               
-              ) : (
-                <></>
-              )}
-              
-                  </div>
+                
+            </div>
             </>
           ) : (
             <></>
           )}
           {this.state.gameStage == 2 ? (
             <>
+            <div style={{position: "fixed", bottom: 0, left: 0, width: "100%", height: "58px", 
+                    fontSize: "20px", color: "black", background: "linear-gradient(90deg, rgba(0,0,128,1) 0%, rgba(204,0,0,1) 100%)",
+                    fontFamily:"", cursor: "pointer"}}>
+
+                <span
+                  style={{
+                    fontSize: "20px",
+                    position: "absolute",
+                    left: "2%", 
+                    display: "inline-block", 
+                    bottom: "30%",
+                    color: "white",
+                  }}
+                >
+                  {this.state.direction}
+                </span>
+
+                <div
+                  style={{
+                    fontSize: "20px",   
+                    position: "relative",       
+                    textAlign: "center",
+                    bottom: "14%",
+                    color: "white",
+                  }}
+                >
+                  <p style={{fontSize: "20px"}}>{this.state.hoverUniversity}</p>
+                </div>
+                  
+                  <div onClick={(e) => this.popup(e)} style={{fontSize: "20px", position: "absolute", right: "8%", bottom: "30%", color: "white"}}>Info</div>
+              
+                {this.state.selectedUniversity != "" ? <div
+                  style={{
+                    fontSize: "20px",
+                    position: "absolute",
+                    right: "2%", 
+                    bottom: "30%",
+                    color: "white",
+                  }}
+                  onClick={(e) => this.handleNext(e)}
+                >Next →
+                </div> : <></>}
+               
+                
+
+             </div>
               <div style={{ height: "100%" }}>
 
                 <Colleges popupBoolean={this.state.popupBoolean} selectedUniversity={this.state.selectedUniversity} handleHoverUniversityClick={this.handleHoverUniversityClick} deleteHoverUniversity={this.deleteHoverUniversity} updateHoverUniversity={this.updateHoverUniversity} />
@@ -883,6 +903,10 @@ class App extends React.Component {
                 <br />
                 <br />
               </div>
+
+           
+
+
               <div
                 style={{
                   position: "fixed",
@@ -890,32 +914,8 @@ class App extends React.Component {
                   left: 30,
                 }}
               >
-               <span
-                  style={{
-                    position: "relative",
-                    padding: "10px",
-                    fontSize: "20px",
-                    paddingLeft: "20px",
-                    paddingRight: "20px",
-                    marginLeft: "5px",
-                    backgroundColor: "#f2f2f2",
-                    borderRadius: "5px",
-                  }}
-                >
-                  {this.state.direction}
-                </span>
-                <span
-                  style={{
-                    fontSize: "20px",
-                    
-
-                    borderRadius: "5px",
-                    width: "260px",
-                    display: "inline-block",
-                  }}
-                >
-                    {this.state.hoverUniversity}
-                </span>
+              
+                
                 <div
                   style={{
                     position: "fixed",
@@ -923,42 +923,12 @@ class App extends React.Component {
                     right: 30,
                   }}
                 >
-                  <span
-                    style={{
-                      fontSize: "20px",
-                      backgroundColor: "#f2f2f2",
-                      padding: "10px",
-                      paddingLeft: "20px",
-                      paddingRight: "20px",
-                      marginRight: "5px",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                    }}
-                    onClick={(e) => this.popup(e)}
-                  >
-                    Info
-                  </span>
-                {this.state.selectedUniversity != "" ? 
                  
-                  <span
-                    style={{
-                      fontSize: "20px",
-                      backgroundColor: "black",
-                      padding: "10px",
-                      paddingLeft: "20px",
-                      paddingRight: "20px",
-                      color: "white",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                    }}
-                    onClick={(e) => this.handleNext(e)}
-                  >
-                    →
-                  </span>
-                 : <></>}
+                
                 </div>
               
               </div>
+              
             </>
           ) : (
             <></>
