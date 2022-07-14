@@ -63,6 +63,12 @@ svg {
   z-index: 1000;
 }
 
+.svgContainerTwo svg {
+  width: 300px;
+  height: 300px;
+  z-index: 1000;
+}
+
 .grid-container {
   display: grid;
   /* grid-template-columns: repeat(auto-fill,minmax(185px,1fr)); */
@@ -80,9 +86,9 @@ svg {
 
 .grid-container-two {
   display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(500px,1fr));
-  padding: 10px;
-  width: 90%;
+  grid-template-columns: auto auto; 
+  
+  width: 100%;
   z-index: 1000;  
 }
 
@@ -96,4 +102,21 @@ svg {
 .grid-item:hover {
   background-color: #e3e1e1;   
   border-radius: 5px;
+}
+
+.grid-item-two {
+  padding: 50px;
+  font-size: 30px;
+  text-align: center;
+  margin-left: 4px;
+  margin-right: 4px;
+
+}
+
+#dnc:hover {
+
+}
+
+#rnc:hover {
+
 }

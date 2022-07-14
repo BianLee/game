@@ -7,6 +7,7 @@ import Parties from "./data/Parties.js"
 import { toHaveDisplayValue } from "@testing-library/jest-dom/dist/matchers";
 
 var globalStateID = -1;
+
 const stateArray = [
   "Alabama",
   "Alaska",
@@ -58,6 +59,7 @@ const stateArray = [
   "West Virginia",
   "Wisconsin",
   "Wyoming",
+  "District of Columbia"
 ];
 const cityArray = [
   "Birmingham",
@@ -110,6 +112,7 @@ const cityArray = [
   "Huntington",
   "Madison",
   "Casper",
+  "Washington"
 ];
 
 const cityPopulation = [
@@ -162,7 +165,8 @@ const cityPopulation = [
   "215,766",
   "201,546",
   "258,366",
-  "58,287"
+  "58,287",
+  "701,974"
 ]
 
 const directionArray = [
@@ -172,12 +176,69 @@ const directionArray = [
   "4. Select your political alignment. "
 ]
 
+const electoralVotes = [
+  9,
+  3,
+  11,
+  6,
+  55,
+  9,
+  7,
+  3,
+  29,
+  16,
+  4,
+  4,
+  20,
+  11,
+  6,
+  6,
+  8,
+  8,
+  4,
+  10,
+  11,
+  16,
+  10,
+  6,
+  10,
+  3,
+  5,
+  6,
+  4,
+  14,
+  5,
+  29,
+  15,
+  3,
+  18,
+  7,
+  7,
+  20,
+  4,
+  9,
+  3,
+  11,
+  38,
+  6,
+  3,
+  13,
+  12,
+  5,
+  10,
+  3,
+  3
+]
+
+
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       stateID: -1,
+      numberOfBlue: 0,
+      numberOfRed: 0, 
       hoverUniversity: "", 
       selectedUniversity: "", 
       homeState: "",
@@ -188,7 +249,9 @@ class App extends React.Component {
       gameStage: 1, 
       direction: "", 
       popupBoolean: false, 
+      fiveStatesElectoralVotes: 0, 
       stateColors: [
+        "",
         "",
         "",
         "",
@@ -291,6 +354,7 @@ class App extends React.Component {
         "#CC0000",
         "navy",
         "#CC0000",
+        "navy"
       ],
 
     };
@@ -409,6 +473,8 @@ class App extends React.Component {
       i = 48;
     } else if (e.target.dataset.name == "WY") {
       i = 49;
+    } else if (e.target.dataset.name == "DC") {
+      i = 50; // Washington D.C is a special case. 
     }
     globalStateID = i;
   }
@@ -505,6 +571,7 @@ class App extends React.Component {
           ],
         });
       }
+      
       let newArray = Array.from(this.state.stateColors);
       if (
         (newArray[globalStateID] == "#e3e1e1" ||
@@ -512,12 +579,27 @@ class App extends React.Component {
         this.state.selectedStates.length < 5
       ) {
         newArray[globalStateID] = this.state.lastElectionColors[globalStateID];
+        if (this.state.lastElectionColors[globalStateID] == "#CC0000") {
+          this.setState({
+            fiveStatesElectoralVotes: electoralVotes[globalStateID] + this.state.fiveStatesElectoralVotes,
+            numberOfRed: this.state.numberOfRed + 1
+          })
+        }
+        else if (this.state.lastElectionColors[globalStateID] == "navy") {
+          this.setState({
+            fiveStatesElectoralVotes: electoralVotes[globalStateID] + this.state.fiveStatesElectoralVotes,
+            numberOfBlue: this.state.numberOfBlue + 1, 
+          })
+        }
+
       } else if (newArray[globalStateID] == "#CC0000") {
         newArray[globalStateID] = "";
         this.setState({
           selectedStates: this.state.selectedStates.filter(
             (item) => item != stateArray[globalStateID]
           ),
+          numberOfRed: this.state.numberOfRed - 1,
+          fiveStatesElectoralVotes: this.state.fiveStatesElectoralVotes - electoralVotes[globalStateID]
         });
       } else if (newArray[globalStateID] == "navy") {
         newArray[globalStateID] = "";
@@ -525,8 +607,11 @@ class App extends React.Component {
           selectedStates: this.state.selectedStates.filter(
             (item) => item != stateArray[globalStateID]
           ),
+          numberOfBlue: this.state.numberOfBlue - 1,
+          fiveStatesElectoralVotes: this.state.fiveStatesElectoralVotes - electoralVotes[globalStateID]
         });
       }
+     
       this.setState({
         stateColors: newArray,
       });
@@ -712,20 +797,23 @@ class App extends React.Component {
       WY: {
         fill: this.state.stateColors[49],
       },
+      DC2: {
+        fill: this.state.stateColors[50],
+      }
     };
   };
 
   render() {
     return (
       <>
-        <br />
+        
         
 
         <center>
           {this.state.popupBoolean == true && this.state.gameStage == 2 ? <>
             <div style={{textAlign: "left", padding: "20px", width: "700px", height: "350px", position: "absolute", top: "50%", left: "50%", zIndex: "1000", borderRadius: "5px",  backgroundColor: "#590159", transform: "translate(-50%, -50%)"}}>
               <span style={{position: "fixed", top: "10px", right: "10px", fontSize: "25px", color: "white", fontFamily:"", cursor: "pointer"}} onClick={() => this.setState({popupBoolean: false})}>X</span>
-              <span style={{fontSize: "25px", color: "white"}}>
+              <span style={{fontSize: "25px", color: "white", lineHeight: "35px"}}>
                 Your alma mater determines alumni network and resources, both of which are essential for spreading awareness of your political campaign and receiving endorsements. 
                 You also get a geographical advantage at the state where you attended its flagship university.
           
@@ -747,6 +835,7 @@ class App extends React.Component {
           
           {this.state.gameStage == 1 || this.state.gameStage == 3 ? (
             <>
+            <br/>
               <div onMouseOver={this.hoverHandler}>
                 <USAMap
                   style={{position: "fixed", top: "50px"}}
@@ -766,6 +855,7 @@ class App extends React.Component {
                         </span>
                       );
                     })}
+                    <p style={{fontSize: "18px", marginTop: "10px", }}><span style={{color: "#CC0000"}}>Red: {this.state.numberOfRed}</span>, <span style={{color: "navy"}}>Blue: {this.state.numberOfBlue}</span>, Electoral Votes at stake: {this.state.fiveStatesElectoralVotes}</p>
                   </>
                 ) : (
                   <>
@@ -849,6 +939,7 @@ class App extends React.Component {
           )}
           {this.state.gameStage == 2 ? (
             <>
+            <br/>
             <div style={{position: "fixed", bottom: 0, left: 0, width: "100%", height: "58px", 
                     fontSize: "20px", color: "black", background: "linear-gradient(90deg, rgba(0,0,128,1) 0%, rgba(204,0,0,1) 100%)",
                     fontFamily:"", cursor: "pointer"}}>
