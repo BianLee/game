@@ -855,8 +855,10 @@ class App extends React.Component {
                         </span>
                       );
                     })}
+                    {/* 
                     <p style={{fontSize: "18px", marginTop: "10px", }}><span style={{color: "#CC0000"}}>Red: {this.state.numberOfRed}</span>, <span style={{color: "navy"}}>Blue: {this.state.numberOfBlue}</span>, Electoral Votes at stake: {this.state.fiveStatesElectoralVotes}</p>
-                  </>
+                    */}
+                    </>
                 ) : (
                   <>
                     <span style={{zIndex: "2000"}}>
