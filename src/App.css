@@ -10,6 +10,8 @@ path:hover {
 
 html,
 body {
+ 
+  
   font-family: "Edu SA Beginner", cursive;
   cursor: crosshair;
   max-width: 100%;
@@ -64,6 +66,12 @@ svg {
 }
 
 .svgContainerTwo svg {
+  width: 400px;
+  height: 400px;
+  z-index: 1000;
+}
+
+.imgContainer img {
   width: 300px;
   height: 300px;
   z-index: 1000;
@@ -87,10 +95,17 @@ svg {
 .grid-container-two {
   display: grid;
   grid-template-columns: auto auto; 
-  
-  width: 100%;
+  width: 80%;
   z-index: 1000;  
 }
+
+.grid-container-three {
+  display: grid;
+  grid-template-columns: auto auto; 
+  width: 90%;
+  z-index: 1000; 
+}
+
 
 .grid-item {
   padding: 20px;
@@ -106,11 +121,29 @@ svg {
 
 .grid-item-two {
   padding: 50px;
-  font-size: 30px;
+  font-size: 50px;
   text-align: center;
-  margin-left: 4px;
-  margin-right: 4px;
+}
 
+.grid-item-three {
+  font-size: 50px;
+  text-align: center;
+}
+
+.grid-item-three:hover {
+  background-color: #e3e1e1;   
+  border-radius: 5px;
+}
+
+
+#dnc { 
+
+ 
+
+}
+
+#rnc {
+ 
 }
 
 #dnc:hover {
@@ -118,5 +151,6 @@ svg {
 }
 
 #rnc:hover {
+
 
 }

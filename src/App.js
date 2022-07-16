@@ -3,7 +3,9 @@ import "./App.css";
 import USAMap from "react-usa-map";
 import Colorado from "./data/Colorado";
 import Colleges from "./data/Colleges.js"
+import UnitedStates from "./data/flags/UnitedStates.js"
 import Parties from "./data/Parties.js"
+import Candidates from "./data/Candidates.js"
 import { toHaveDisplayValue } from "@testing-library/jest-dom/dist/matchers";
 
 var globalStateID = -1;
@@ -172,8 +174,8 @@ const cityPopulation = [
 const directionArray = [
   "1. Select your home state and a hometown",
   "2. Select your alma mater",
-  "3. Select five states where you'll start your campaign.",
-  "4. Select your political alignment. "
+  "3. Select five states where you'll start your campaign",
+  "4. Select your running mate for the presidential race"
 ]
 
 const electoralVotes = [
@@ -246,7 +248,7 @@ class App extends React.Component {
       homeTown: "",
       selectedStates: [],
       hoverState: "",
-      gameStage: 1, 
+      gameStage: 1  , 
       direction: "", 
       popupBoolean: false, 
       fiveStatesElectoralVotes: 0, 
@@ -553,7 +555,7 @@ class App extends React.Component {
     if (this.state.gameStage == 1) {
       let newArray = Array.from(this.state.stateColors);
       newArray = newArray.filter((item) => item == "");
-      newArray[globalStateID] = "darkorange";
+      newArray[globalStateID] = "darkorange"; // #5d1d69 
       this.findStateId(e);
       this.setState({
         homeTown: cityArray[globalStateID],
@@ -811,7 +813,7 @@ class App extends React.Component {
 
         <center>
           {this.state.popupBoolean == true && this.state.gameStage == 2 ? <>
-            <div style={{textAlign: "left", padding: "20px", width: "700px", height: "350px", position: "absolute", top: "50%", left: "50%", zIndex: "1000", borderRadius: "5px",  backgroundColor: "#590159", transform: "translate(-50%, -50%)"}}>
+            <div style={{textAlign: "left", padding: "20px", width: "700px", height: "350px", position: "absolute", top: "50%", left: "50%", zIndex: "1000", borderRadius: "5px",  background: "linear-gradient(90deg, rgba(0,0,128,1) 0%, rgba(131,0,123,1) 100%)" , transform: "translate(-50%, -50%)"}}>
               <span style={{position: "fixed", top: "10px", right: "10px", fontSize: "25px", color: "white", fontFamily:"", cursor: "pointer"}} onClick={() => this.setState({popupBoolean: false})}>X</span>
               <span style={{fontSize: "25px", color: "white", lineHeight: "35px"}}>
                 Your alma mater determines alumni network and resources, both of which are essential for spreading awareness of your political campaign and receiving endorsements. 
@@ -823,10 +825,25 @@ class App extends React.Component {
           </> : <></>}
           {this.state.gameStage == 0 ? (
             <>
+        <br/>
+        <br/>
             <Parties /> 
              <div style={{position: "fixed", bottom: 0, left: 0, width: "100%", height: "58px", 
                     fontSize: "20px", color: "black", background: "linear-gradient(90deg, rgba(0,0,128,1) 0%, rgba(204,0,0,1) 100%)",
-                    fontFamily:"", cursor: "pointer"}}></div>
+                    fontFamily:"", cursor: "pointer"}}>
+
+                <div
+                  style={{
+                    fontSize: "20px",
+                    position: "absolute",
+                    left: "2%", 
+                    bottom: "30%",
+                    color: "white",
+                  }}
+                >
+                  {this.state.direction}
+                </div>
+             </div>
             </>
           ) : (
             <></>
@@ -1026,6 +1043,31 @@ class App extends React.Component {
           ) : (
             <></>
           )}
+          {this.state.gameStage == 4 ? <>
+            <br/>
+            
+            <div style={{position: "fixed", bottom: 0, left: 0, width: "100%", height: "58px", 
+                    fontSize: "20px", color: "black", background: "linear-gradient(90deg, rgba(0,0,128,1) 0%, rgba(204,0,0,1) 100%)",
+                    fontFamily:"", cursor: "pointer"}}>
+                      <span
+                  style={{
+                    fontSize: "20px",
+                    position: "absolute",
+                    left: "2%", 
+                    display: "inline-block", 
+                    bottom: "30%",
+                    color: "white",
+                  }}
+                >
+                  {this.state.direction}
+                </span>
+
+            </div>
+            <Candidates />
+
+    
+          
+          </> : <></>}
         </center>
       </>
     );

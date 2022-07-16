@@ -8,10 +8,11 @@ class Parties extends React.Component {
         return (
             <>
                 <div className="grid-container-two">
-                    <div className="svgContainerTwo grid-item-two" id="dnc" style={{backgroundColor: "#cccced"}}>
+                    <div className="svgContainerTwo grid-item-two" id="dnc">
                         <DemocraticParty />
+                    
                     </div>
-                    <div className="svgContainerTwo grid-item-two" id="rnc" style={{backgroundColor: "#edcccc"}}>
+                    <div className="svgContainerTwo grid-item-two" id="rnc">
                         <RepublicanParty />
                     </div>
                 </div>
